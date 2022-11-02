@@ -14,6 +14,7 @@ const App = () => {
   const [zenMode, setZenMode] = useState(false);
   const [showModal, setshowModal] = useState(true);
   const [showView, setshowView] = useState(false);
+  const [initialAnimFinished, setInitialAnimFinished] = useState(false);
   const [currentCarName, setCurrentCarName] = useState("Mustang GT");
   const [currentCarBackground, setCurrentCarBackground] = useState("#011a0b");
   const controlls = useAnimationControls();
@@ -181,6 +182,7 @@ const App = () => {
         transition: { duration: 2, times: [0, 0.5, 0.7, 1] },
       }))
       .then(() => {
+        setInitialAnimFinished(true);
         if (!lg) {
           setInterval(() => {
             setshowView(true);
@@ -317,7 +319,7 @@ const App = () => {
                   value.index === 6 && showView && setshowView(false)
                 }
                 onClick={() => {
-                  if (value.index === 6) {
+                  if (value.index === 6 && !zenMode) {
                     enterZenMode();
                     setshowView(false);
                   }
@@ -326,13 +328,13 @@ const App = () => {
             );
           })}
         <AnimatePresence>
-          {showView && !zenMode && (
+          {showView && !zenMode && initialAnimFinished && (
             <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="absolute flex justify-center items-center w-20 h-20 rounded-full glass_bg z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+              className="flex justify-center items-center w-20 h-20 rounded-full glass_bg font-semibold -translate-x-1/2 -translate-y-1/2 absolute z-10 top-1/2 left-1/2  pointer-events-none after:-inset-2 after:rounded-full after:absolute after:border-[#C3C1BA] after:border"
             >
               View
             </m.div>
