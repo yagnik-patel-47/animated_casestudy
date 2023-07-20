@@ -1,38 +1,41 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 import {
   motion as m,
   useAnimationControls,
   AnimatePresence,
-} from "framer-motion";
-import useCarsData from "./data";
+} from "framer-motion"
+import useCarsData from "./data"
 
-const rotateValues = [-5, -5, 10, 5, -10, -5];
+const rotateValues = [-5, -5, -5, 10, 5, -10, -5]
 
 const App = () => {
-  const lg = window.matchMedia("(min-width: 1024px)").matches;
-  const [canClickPrev, setCanClickPrev] = useState(true);
-  const [zenMode, setZenMode] = useState(false);
-  const [showModal, setshowModal] = useState(true);
-  const [showView, setshowView] = useState(false);
-  const [initialAnimFinished, setInitialAnimFinished] = useState(false);
-  const [currentCarName, setCurrentCarName] = useState("Mustang GT");
-  const [currentCarBackground, setCurrentCarBackground] = useState("#011a0b");
-  const controlls = useAnimationControls();
-  const titleControlls = useAnimationControls();
-  const { carsData, increaseIndex, decreaseIndex } = useCarsData();
-  const allTitles: string[] = [];
-  carsData.forEach((value) => allTitles.push(value.name));
-  const nextCarName = carsData.filter((value) => value.index === 5)[0].name;
-  const nextCarBackground = carsData.filter((value) => value.index === 5)[0]
-    .bgColor;
+  const lg = window.matchMedia("(min-width: 1024px)").matches
+  const [canClickPrev, setCanClickPrev] = useState(true)
+  const [zenMode, setZenMode] = useState(false)
+  const [showModal, setshowModal] = useState(true)
+  const [showView, setshowView] = useState(false)
+  const [initialAnimFinished, setInitialAnimFinished] = useState(false)
+  const [currentCarName, setCurrentCarName] = useState("Mustang GT")
+  const [currentCarBackground, setCurrentCarBackground] = useState("#011a0b")
+  const controlls = useAnimationControls()
+  const titleControlls = useAnimationControls()
+  const { carsData, increaseIndex, decreaseIndex } = useCarsData()
+  const allTitles: string[] = []
+  carsData.forEach((value) => allTitles.push(value.name))
+  const nextCarName = carsData.filter(
+    (value) => value.index === carsData.length - 1
+  )[0].name
+  const nextCarBackground = carsData.filter(
+    (value) => value.index === carsData.length - 1
+  )[0].bgColor
 
   const animateNext = () => {
-    setCurrentCarName(nextCarName);
-    setCurrentCarBackground(nextCarBackground);
-    setCanClickPrev(false);
+    setCurrentCarName(nextCarName)
+    setCurrentCarBackground(nextCarBackground)
+    setCanClickPrev(false)
     controlls
       .start((index) =>
-        index === 6
+        index === carsData.length
           ? {
               x: 300,
               rotate: 10,
@@ -45,18 +48,20 @@ const App = () => {
             }
       )
       .then(() => {
-        increaseIndex();
-        controlls.set((index) => ({ rotate: rotateValues[index - 1] }));
-        controlls.set((index) => (index === 6 ? { x: 0, opacity: 1 } : {}));
-        controlls.set((index) => (index === 1 ? { x: 0, opacity: 1 } : {}));
-        setCanClickPrev(true);
-      });
-  };
+        increaseIndex()
+        controlls.set((index) => ({ rotate: rotateValues[index - 1] }))
+        controlls.set((index) =>
+          index === carsData.length ? { x: 0, opacity: 1 } : {}
+        )
+        controlls.set((index) => (index === 1 ? { x: 0, opacity: 1 } : {}))
+        setCanClickPrev(true)
+      })
+  }
 
   const animtatePrev = () => {
-    decreaseIndex();
+    decreaseIndex()
     controlls.set((index) =>
-      index === 6
+      index === carsData.length
         ? {
             x: 300,
             rotate: 10,
@@ -64,18 +69,18 @@ const App = () => {
             scale: 0.6,
           }
         : {}
-    );
+    )
     controlls.set((index) =>
-      index !== 6
+      index !== carsData.length
         ? {
             rotate: rotateValues[index],
           }
         : {}
-    );
-    setCanClickPrev(false);
+    )
+    setCanClickPrev(false)
     controlls
       .start((index) =>
-        index === 6
+        index === carsData.length
           ? {
               x: 0,
               rotate: -5,
@@ -88,19 +93,19 @@ const App = () => {
               transition: { duration: 0.8, ease: [0.34, 1.56, 0.64, 1] },
             }
       )
-      .then(() => setCanClickPrev(true));
-  };
+      .then(() => setCanClickPrev(true))
+  }
 
   const enterZenMode = () => {
-    setZenMode(true);
+    setZenMode(true)
     controlls.start({ rotate: 0, transition: { duration: 0.7 } }).then(() => {
       controlls.set((index) =>
-        index !== 6
+        index !== carsData.length
           ? { opacity: 0, pointerEvents: "none", visibility: "hidden" }
           : {}
-      );
+      )
       controlls.start((index) =>
-        index === 6
+        index === carsData.length
           ? {
               y: [null, 130, 130],
               scale: [1, 1.1, 1.4],
@@ -110,7 +115,7 @@ const App = () => {
               },
             }
           : {}
-      );
+      )
       titleControlls.start({
         y: "-70vh",
         color: "#fff",
@@ -118,15 +123,15 @@ const App = () => {
           ease: [0.76, 0, 0.24, 1],
           duration: 1.5,
         },
-      });
-    });
-  };
+      })
+    })
+  }
 
   const leaveZenMode = () => {
-    setZenMode(false);
+    setZenMode(false)
     controlls
       .start((index) =>
-        index === 6
+        index === carsData.length
           ? {
               y: 0,
               scale: 1,
@@ -142,15 +147,15 @@ const App = () => {
           opacity: 1,
           pointerEvents: "auto",
           visibility: "visible",
-        });
+        })
         controlls.set((index) =>
-          index === 6 ? { transformOrigin: "center" } : {}
-        );
+          index === carsData.length ? { transformOrigin: "center" } : {}
+        )
         controlls.start((index) => ({
           rotate: rotateValues[index - 1],
           transition: { duration: 1 },
-        }));
-      });
+        }))
+      })
     titleControlls.start({
       y: 0,
       color: "#a3a3a3",
@@ -158,22 +163,24 @@ const App = () => {
         ease: [0.76, 0, 0.24, 1],
         duration: 1.5,
       },
-    });
-  };
+    })
+  }
 
   useEffect(() => {
-    setCurrentCarName(carsData.filter((value) => value.index === 6)[0].name);
-  }, [carsData]);
+    setCurrentCarName(
+      carsData.filter((value) => value.index === carsData.length)[0].name
+    )
+  }, [carsData])
 
   useEffect(() => {
     setCurrentCarBackground(
-      carsData.filter((value) => value.index === 6)[0].bgColor
-    );
-  }, [carsData]);
+      carsData.filter((value) => value.index === carsData.length)[0].bgColor
+    )
+  }, [carsData])
 
   useEffect(() => {
-    controlls.set((index) => ({ x: `${125 * (index - 3.5)}%`, opacity: 0 }));
-    titleControlls.set({ y: "100%" });
+    controlls.set((index) => ({ x: `${125 * (index - 4)}%`, opacity: 0 }))
+    titleControlls.set({ y: "100%" })
     controlls
       .start((index) => ({
         x: [null, "0%", "0%", "0%"],
@@ -182,14 +189,14 @@ const App = () => {
         transition: { duration: 2, times: [0, 0.5, 0.7, 1] },
       }))
       .then(() => {
-        setInitialAnimFinished(true);
+        setInitialAnimFinished(true)
         if (!lg) {
           setInterval(() => {
-            setshowView(true);
-            setTimeout(() => setshowView(false), 1000);
-          }, 5000);
+            setshowView(true)
+            setTimeout(() => setshowView(false), 1000)
+          }, 5000)
         }
-      });
+      })
     titleControlls.start({
       y: 0,
       color: "#a3a3a3",
@@ -198,8 +205,8 @@ const App = () => {
         delay: 1.5,
         ease: "easeOut",
       },
-    });
-  }, []);
+    })
+  }, [])
   return (
     <m.div
       animate={{
@@ -235,7 +242,7 @@ const App = () => {
             stroke="currentColor"
             className="w-8 h-8 cursor-pointer"
             onClick={() =>
-              window.open("https://yagnik-port.vercel.app", "_blank")
+              window.open("https://yagnik-devp.vercel.app", "_blank")
             }
           >
             <path
@@ -301,7 +308,7 @@ const App = () => {
             return (
               <m.img
                 className={`w-[60vw] md:w-[25vw] lg:w-[40vw] xl:w-[20vw] ${
-                  value.index === 6 ? "cursor-pointer" : ""
+                  value.index === carsData.length ? "cursor-pointer" : ""
                 } absolute aspect-[9/14] object-cover car-${value.index}`}
                 style={{ zIndex: index + 1 }}
                 src={value.thumbImage}
@@ -310,22 +317,24 @@ const App = () => {
                 custom={value.index}
                 animate={controlls}
                 onMouseEnter={() => {
-                  if (value.index === 6) {
-                    setshowView(true);
-                    console.log("fick");
+                  if (value.index === carsData.length) {
+                    setshowView(true)
+                    console.log("fick")
                   }
                 }}
                 onMouseLeave={() =>
-                  value.index === 6 && showView && setshowView(false)
+                  value.index === carsData.length &&
+                  showView &&
+                  setshowView(false)
                 }
                 onClick={() => {
-                  if (value.index === 6 && !zenMode) {
-                    enterZenMode();
-                    setshowView(false);
+                  if (value.index === carsData.length && !zenMode) {
+                    enterZenMode()
+                    setshowView(false)
                   }
                 }}
               />
-            );
+            )
           })}
         <AnimatePresence>
           {showView && !zenMode && initialAnimFinished && (
@@ -387,7 +396,7 @@ const App = () => {
                   animate={{ y: 0 }}
                   exit={{ y: "-100%" }}
                   transition={{ duration: 1, ease: "easeOut" }}
-                  className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[10rem] 2xl:text-[12rem] leading-none top-0 font-semibold text-center`}
+                  className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] 2xl:text-[10rem] leading-none top-0 font-semibold text-center`}
                 >
                   {title}
                 </m.h1>
@@ -447,7 +456,7 @@ const App = () => {
         ))}
       </div>
     </m.div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

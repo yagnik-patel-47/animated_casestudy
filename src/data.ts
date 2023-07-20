@@ -1,19 +1,21 @@
-import { useState } from "react";
+import { useState } from "react"
 
 const useCarsData = () => {
   const [carsData, setCarsData] = useState([
     {
-      name: "BMW M4 Coupé",
+      name: "BMW M4",
       thumbImage: "/cars/m4.webp",
       index: 1,
       images: ["/cars/m4_1.webp", "/cars/m4_2.webp"],
+      objectPos: ["80% center", "center 90%"],
       bgColor: "#131313",
     },
     {
-      name: "AMG GT Coupé",
+      name: "Mercedes AMG GT",
       thumbImage: "/cars/amg.webp",
       index: 2,
       images: ["/cars/amg_1.webp", "/cars/amg_2.webp"],
+      objectPos: ["center", "65% center"],
       bgColor: "#2d343e",
     },
     {
@@ -21,50 +23,62 @@ const useCarsData = () => {
       thumbImage: "/cars/mk5.webp",
       index: 3,
       images: ["/cars/mk5_1.webp", "/cars/mk5_2.webp"],
+      objectPos: ["center", "center"],
       bgColor: "#3e1313",
-    },
-    {
-      name: "Skyline R34",
-      thumbImage: "/cars/r34.webp",
-      index: 4,
-      images: ["/cars/r34_1.webp", "/cars/r34_2.webp"],
-      bgColor: "#13200d",
     },
     {
       name: "Subaru WRX",
       thumbImage: "/cars/wrx.webp",
-      index: 5,
+      index: 4,
       images: ["/cars/wrx_1.webp", "/cars/wrx_2.webp"],
+      objectPos: ["center", "center"],
       bgColor: "#043134",
     },
     {
-      name: "Mustang GT",
-      thumbImage: "/cars/mustang.webp",
+      name: "Nissan GTR R34",
+      thumbImage: "/cars/r34.webp",
+      index: 5,
+      images: ["/cars/r34_1.webp", "/cars/r34_2.webp"],
+      objectPos: ["center", "center 70%"],
+      bgColor: "#13200d",
+    },
+    {
+      name: "Porsche 911 GT3",
+      thumbImage: "/cars/gt3.webp",
       index: 6,
+      images: ["/cars/gt3_1.webp", "/cars/gt3_2.webp"],
+      objectPos: ["center", "center 90%"],
+      bgColor: "#002937",
+    },
+    {
+      name: "Ford Mustang GT",
+      thumbImage: "/cars/mustang.webp",
+      index: 7,
       images: ["/cars/mustang_1.webp", "/cars/mustang_2.webp"],
+      objectPos: ["center", "center 80%"],
       bgColor: "#011a0b",
     },
-  ]);
+  ])
 
   const increaseIndex = () => {
     const newData = carsData.map((value) =>
-      value.index !== 6
+      value.index !== 7
         ? { ...value, index: (value.index += 1) }
         : { ...value, index: (value.index = 1) }
-    );
-    setCarsData(newData);
-  };
+    )
+    setCarsData(newData)
+  }
 
   const decreaseIndex = () => {
     const newData = carsData.map((value) =>
       value.index !== 1
         ? { ...value, index: (value.index -= 1) }
-        : { ...value, index: (value.index = 6) }
-    );
-    setCarsData(newData);
-  };
+        : { ...value, index: (value.index = 7) }
+    )
+    setCarsData(newData)
+  }
 
-  return { carsData, increaseIndex, decreaseIndex, setCarsData };
-};
+  return { carsData, increaseIndex, decreaseIndex, setCarsData }
+}
 
-export default useCarsData;
+export default useCarsData
