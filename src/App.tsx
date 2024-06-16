@@ -304,7 +304,7 @@ const App = () => {
 					.map((value, index) => {
 						return (
 							<m.img
-								className={`w-[60vw] md:w-[25vw] lg:w-[40vw] xl:w-[20vw] ${
+								className={`w-[60vw] md:w-[45vw] lg:w-[40vw] xl:w-[20vw] ${
 									value.index === carsData.length ? "cursor-pointer" : ""
 								} absolute aspect-[9/14] object-cover car-${value.index}`}
 								style={{ zIndex: index + 1 }}
@@ -316,7 +316,6 @@ const App = () => {
 								onMouseEnter={() => {
 									if (value.index === carsData.length) {
 										setshowView(true);
-										console.log("fick");
 									}
 								}}
 								onMouseLeave={() =>
@@ -393,7 +392,7 @@ const App = () => {
 									animate={{ y: 0 }}
 									exit={{ y: "-100%" }}
 									transition={{ duration: 1, ease: "easeOut" }}
-									className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] 2xl:text-[10rem] leading-none top-0 font-semibold text-center`}
+									className={`leading-none top-0 font-semibold text-center text-[calc(100vw_/_12)]`}
 								>
 									{title}
 								</m.h1>
