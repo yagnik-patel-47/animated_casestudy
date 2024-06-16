@@ -17,8 +17,8 @@ const App = () => {
 	const [initialAnimFinished, setInitialAnimFinished] = useState(false);
 	const [currentCarName, setCurrentCarName] = useState("Mustang GT");
 	const [currentCarBackground, setCurrentCarBackground] = useState("#011a0b");
-	const controlls = useAnimationControls();
-	const titleControlls = useAnimationControls();
+	const controls = useAnimationControls();
+	const titleControls = useAnimationControls();
 	const { carsData, increaseIndex, decreaseIndex } = useCarsData();
 	const allTitles: string[] = [];
 	carsData.forEach((value) => allTitles.push(value.name));
@@ -33,7 +33,7 @@ const App = () => {
 		setCurrentCarName(nextCarName);
 		setCurrentCarBackground(nextCarBackground);
 		setCanClickPrev(false);
-		controlls
+		controls
 			.start((index) =>
 				index === carsData.length
 					? {
@@ -49,18 +49,18 @@ const App = () => {
 			)
 			.then(() => {
 				increaseIndex();
-				controlls.set((index) => ({ rotate: rotateValues[index - 1] }));
-				controlls.set((index) =>
+				controls.set((index) => ({ rotate: rotateValues[index - 1] }));
+				controls.set((index) =>
 					index === carsData.length ? { x: 0, opacity: 1 } : {},
 				);
-				controlls.set((index) => (index === 1 ? { x: 0, opacity: 1 } : {}));
+				controls.set((index) => (index === 1 ? { x: 0, opacity: 1 } : {}));
 				setCanClickPrev(true);
 			});
 	};
 
 	const animtatePrev = () => {
 		decreaseIndex();
-		controlls.set((index) =>
+		controls.set((index) =>
 			index === carsData.length
 				? {
 						x: 300,
@@ -70,7 +70,7 @@ const App = () => {
 					}
 				: {},
 		);
-		controlls.set((index) =>
+		controls.set((index) =>
 			index !== carsData.length
 				? {
 						rotate: rotateValues[index],
@@ -78,7 +78,7 @@ const App = () => {
 				: {},
 		);
 		setCanClickPrev(false);
-		controlls
+		controls
 			.start((index) =>
 				index === carsData.length
 					? {
@@ -98,13 +98,13 @@ const App = () => {
 
 	const enterZenMode = () => {
 		setZenMode(true);
-		controlls.start({ rotate: 0, transition: { duration: 0.7 } }).then(() => {
-			controlls.set((index) =>
+		controls.start({ rotate: 0, transition: { duration: 0.7 } }).then(() => {
+			controls.set((index) =>
 				index !== carsData.length
 					? { opacity: 0, pointerEvents: "none", visibility: "hidden" }
 					: {},
 			);
-			controlls.start((index) =>
+			controls.start((index) =>
 				index === carsData.length
 					? {
 							y: [null, 130, 130],
@@ -116,7 +116,7 @@ const App = () => {
 						}
 					: {},
 			);
-			titleControlls.start({
+			titleControls.start({
 				y: "-70vh",
 				color: "#fff",
 				transition: {
@@ -129,7 +129,7 @@ const App = () => {
 
 	const leaveZenMode = () => {
 		setZenMode(false);
-		controlls
+		controls
 			.start((index) =>
 				index === carsData.length
 					? {
@@ -143,20 +143,20 @@ const App = () => {
 					: {},
 			)
 			.then(() => {
-				controlls.set({
+				controls.set({
 					opacity: 1,
 					pointerEvents: "auto",
 					visibility: "visible",
 				});
-				controlls.set((index) =>
+				controls.set((index) =>
 					index === carsData.length ? { transformOrigin: "center" } : {},
 				);
-				controlls.start((index) => ({
+				controls.start((index) => ({
 					rotate: rotateValues[index - 1],
 					transition: { duration: 1 },
 				}));
 			});
-		titleControlls.start({
+		titleControls.start({
 			y: "0vh",
 			color: "#a3a3a3",
 			transition: {
@@ -176,9 +176,9 @@ const App = () => {
 	}, [carsData]);
 
 	useEffect(() => {
-		controlls.set((index) => ({ x: `${125 * (index - 4)}%`, opacity: 0 }));
-		titleControlls.set({ y: "100%" });
-		controlls
+		controls.set((index) => ({ x: `${125 * (index - 4)}%`, opacity: 0 }));
+		titleControls.set({ y: "100%" });
+		controls
 			.start((index) => ({
 				x: [null, "0%", "0%", "0%"],
 				rotate: [0, 0, 0, rotateValues[index - 1]],
@@ -194,7 +194,7 @@ const App = () => {
 					}, 5000);
 				}
 			});
-		titleControlls.start({
+		titleControls.start({
 			y: "0px",
 			color: "#a3a3a3",
 			transition: {
@@ -230,28 +230,27 @@ const App = () => {
 					<span className="h-0.5 w-8 inline-block bg-slate-200 transition-all duration-300 group-hover:scale-x-[1.8] group-active:scale-x-[1.05] group-active:duration-100"></span>
 				</div>
 				<h1 className="text-2xl lg:text-4xl">Cars Case Study</h1>
-				<div className="relative group">
+				<a
+					target="_blank"
+					className="block"
+					href="https://github.com/yagnik-patel-47"
+				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
+						width="24"
+						height="24"
 						viewBox="0 0 24 24"
-						strokeWidth={1.5}
+						fill="none"
 						stroke="currentColor"
-						className="w-8 h-8 cursor-pointer"
-						onClick={() =>
-							window.open("https://yagnik-devp.vercel.app", "_blank")
-						}
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						className="size-7"
 					>
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
-						/>
+						<path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+						<path d="M9 18c-4.51 2-5-2-7-2"></path>
 					</svg>
-					<div className="absolute transition-all duration-300 group-hover:opacity-100 group-hover:pointer-events-auto py-2 px-3 opacity-0 pointer-events-none bg-black right-0 -bottom-12 w-80">
-						<p>Visit my portfolio to contact me.</p>
-					</div>
-				</div>
+				</a>
 			</m.nav>
 
 			<AnimatePresence>
@@ -312,7 +311,7 @@ const App = () => {
 								alt={value.name}
 								key={index}
 								custom={value.index}
-								animate={controlls}
+								animate={controls}
 								onMouseEnter={() => {
 									if (value.index === carsData.length) {
 										setshowView(true);
@@ -381,7 +380,7 @@ const App = () => {
 					</button>
 				</m.div>
 				<m.div
-					animate={titleControlls}
+					animate={titleControls}
 					className="overflow-hidden grid grid-cols-1 grid-rows-1 w-full absolute bottom-0 xl:-bottom-20"
 				>
 					{allTitles.map((title) => (
